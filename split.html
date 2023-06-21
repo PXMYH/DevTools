@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Split String App</title>
+    <style>
+      /* CSS styles here */
+      label {
+        font: 18px;
+        display: block;
+      }
+      input {
+        width: calc(100% / 3);
+        font-size: 16px;
+        line-height: 1.5;
+        resize: none; /* disable resizing */
+        overflow: hidden; /* hide scrollbars */
+      }
+      textarea {
+        width: calc(100% / 3);
+        height: 300px;
+        min-height: 50px;
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.5;
+        resize: none; /* disable resizing */
+        overflow: hidden; /* hide scrollbars */
+      }
+      #output {
+        width: calc(100% / 3);
+        min-height: 50px;
+        max-height: 70vh; /* set the maximum height to 70% of the viewport height */
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-y: auto; /* enable vertical scrolling */
+      }
+    </style>
+    <script>
+      const VERSION = "1.8"; // Define the constant
+      function splitString() {
+        const inputStr = document.getElementById("inputStr").value;
+        const separator = "but was:";
+        const [firstPart, secondPart] = inputStr.split(separator);
+        const processedFirstPart = firstPart.trim().replace(/\[java\]\s+expected:/, '').trim().replace(/^</, '').replace(/>$/, '');
+        const processedSecondPart = secondPart.replace(/^</, '').replace(/>$/, '');
+
+        document.getElementById("firstPart").value = processedFirstPart;
+        document.getElementById("secondPart").value = processedSecondPart;
+      }
+      document.write(`<p>Version = ${VERSION}</p>`); // Display the current version
+    </script>
+  </head>
+  <body>
+    <label for="inputStr">Enter a string:</label>
+    <input id="inputStr" type="text">
+    <button onclick="splitString()">Split</button>
+    <br><br>
+    <label for="Expected">Expected:</label>
+    <textarea id="firstPart"></textarea>
+    <br><br>
+    <label for="But Get">Get:</label>
+    <textarea id="secondPart"></textarea>
+    <br><br>
+    <div id="output"></div>
+    <script>
+      // Auto-resize the output textarea
+      (function() {
+        const output = document.getElementById("output");
+        const textarea = output.previousElementSibling;
+        const fakeText = document.createTextNode("");
+        output.appendChild(fakeText);
+        function updateSize() {
+          fakeText.nodeValue = output.textContent + "\n\n";
+        }
+        textarea.addEventListener("input", updateSize);
+        updateSize();
+      })();
+    </script>
+  </body>
+</html>
